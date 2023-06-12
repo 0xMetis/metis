@@ -1,7 +1,7 @@
 {
   "name": "metis",
   "description": "Secure boilerplate for Electron app based on Vite",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "private": true,
   "author": {
     "email": "kozackunisoft@gmail.com",

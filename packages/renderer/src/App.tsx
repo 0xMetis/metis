@@ -12,7 +12,7 @@ const App = () => {
       <img
         alt="Vite logo"
         src={ViteLogo}
-        width="150"
+        width="151"
       />
 
       <img
