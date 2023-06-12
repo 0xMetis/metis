@@ -11,14 +11,14 @@ export default {
   "{package-lock.json,packages/**/{*.ts,*.tsx,tsconfig.json}}": ({ filenames }) => {
     // if dependencies was changed run type checking for all packages
     if (filenames.some(f => f.endsWith("package-lock.json"))) {
-      return ["pnpm run typecheck --if-present"];
+      return ["pnpm run --if-present typecheck"];
     }
 
     // else run type checking for staged packages
     const fileNameToPackageName = filename =>
       filename.replace(resolve(process.cwd(), "packages") + sep, "").split(sep)[0];
     return [...new Set(filenames.map(fileNameToPackageName))].map(
-      p => `pnpm run typecheck:${p} --if-present`,
+      p => `pnpm run --if-present typecheck:${p}`,
     );
   },
 };

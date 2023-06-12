@@ -1,3 +1,5 @@
+import { resolve } from "path";
+
 /**
  * Configuration for the global end-to-end testing,
  * placed in the project's root 'tests' folder.
@@ -5,6 +7,18 @@
  * @see https://vitest.dev/config/
  */
 const config = {
+  resolve: {
+    alias: {
+      "@": resolve("./src"),
+    },
+  },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        additionalData: '@import "@/assets/scss/global.scss"',
+      },
+    },
+  },
   test: {
     /**
      * By default, vitest searches for the test files in all packages.
