@@ -5,10 +5,12 @@ import { trimTopic } from "../utils";
 
 import Locale from "../locales";
 import { showToast } from "../components/ui-lib";
-import { ModelType } from "./config";
-import { createEmptyMask, Mask } from "./mask";
+import type { ModelType } from "./config";
+import type { Mask } from "./mask";
+import { createEmptyMask } from "./mask";
 import { StoreKey } from "../constant";
-import { api, RequestMessage } from "../client/api";
+import type { RequestMessage } from "../client/api";
+import { api } from "../client/api";
 import { ChatControllerPool } from "../client/controller";
 import { prettyObject } from "../utils/format";
 
@@ -126,7 +128,7 @@ export const useChatStore = create<ChatStore>()(
       },
 
       moveSession(from: number, to: number) {
-        set((state) => {
+        set(state => {
           const { sessions, currentSessionIndex: oldIndex } = state;
 
           // move the session
@@ -161,7 +163,7 @@ export const useChatStore = create<ChatStore>()(
           session.topic = mask.name;
         }
 
-        set((state) => ({
+        set(state => ({
           currentSessionIndex: 0,
           sessions: [session].concat(state.sessions),
         }));
@@ -177,10 +179,7 @@ export const useChatStore = create<ChatStore>()(
         sessions.splice(index, 1);
 
         const currentIndex = get().currentSessionIndex;
-        let nextIndex = Math.min(
-          currentIndex - Number(index < currentIndex),
-          sessions.length - 1,
-        );
+        let nextIndex = Math.min(currentIndex - Number(index < currentIndex), sessions.length - 1);
 
         if (deletingLastSession) {
           nextIndex = 0;
@@ -225,7 +224,7 @@ export const useChatStore = create<ChatStore>()(
       },
 
       onNewMessage(message) {
-        get().updateCurrentSession((session) => {
+        get().updateCurrentSession(session => {
           session.lastUpdate = Date.now();
         });
         get().updateStat(message);
@@ -264,14 +263,12 @@ export const useChatStore = create<ChatStore>()(
         }
 
         const recentMessages = get().getMessagesWithMemory();
-        const sendMessages = systemMessages.concat(
-          recentMessages.concat(userMessage),
-        );
+        const sendMessages = systemMessages.concat(recentMessages.concat(userMessage));
         const sessionIndex = get().currentSessionIndex;
         const messageIndex = get().currentSession().messages.length + 1;
 
         // save user's and bot's message
-        get().updateCurrentSession((session) => {
+        get().updateCurrentSession(session => {
           session.messages.push(userMessage);
           session.messages.push(botMessage);
         });
@@ -294,10 +291,7 @@ export const useChatStore = create<ChatStore>()(
               botMessage.content = message;
               get().onNewMessage(botMessage);
             }
-            ChatControllerPool.remove(
-              sessionIndex,
-              botMessage.id ?? messageIndex,
-            );
+            ChatControllerPool.remove(sessionIndex, botMessage.id ?? messageIndex);
             set(() => ({}));
           },
           onError(error) {
@@ -313,10 +307,7 @@ export const useChatStore = create<ChatStore>()(
             botMessage.isError = !isAborted;
 
             set(() => ({}));
-            ChatControllerPool.remove(
-              sessionIndex,
-              botMessage.id ?? messageIndex,
-            );
+            ChatControllerPool.remove(sessionIndex, botMessage.id ?? messageIndex);
 
             console.error("[Chat] failed ", error);
           },
@@ -349,43 +340,27 @@ export const useChatStore = create<ChatStore>()(
         const modelConfig = session.mask.modelConfig;
 
         // wont send cleared context messages
-        const clearedContextMessages = session.messages.slice(
-          session.clearContextIndex ?? 0,
-        );
-        const messages = clearedContextMessages.filter((msg) => !msg.isError);
+        const clearedContextMessages = session.messages.slice(session.clearContextIndex ?? 0);
+        const messages = clearedContextMessages.filter(msg => !msg.isError);
         const n = messages.length;
 
         const context = session.mask.context.slice();
 
         // long term memory
-        if (
-          modelConfig.sendMemory &&
-          session.memoryPrompt &&
-          session.memoryPrompt.length > 0
-        ) {
+        if (modelConfig.sendMemory && session.memoryPrompt && session.memoryPrompt.length > 0) {
           const memoryPrompt = get().getMemoryPrompt();
           context.push(memoryPrompt);
         }
 
         // get short term and unmemoried long term memory
-        const shortTermMemoryMessageIndex = Math.max(
-          0,
-          n - modelConfig.historyMessageCount,
-        );
+        const shortTermMemoryMessageIndex = Math.max(0, n - modelConfig.historyMessageCount);
         const longTermMemoryMessageIndex = session.lastSummarizeIndex;
-        const mostRecentIndex = Math.max(
-          shortTermMemoryMessageIndex,
-          longTermMemoryMessageIndex,
-        );
+        const mostRecentIndex = Math.max(shortTermMemoryMessageIndex, longTermMemoryMessageIndex);
         const threshold = modelConfig.compressMessageLengthThreshold * 2;
 
         // get recent messages as many as possible
         const reversedRecentMessages = [];
-        for (
-          let i = n - 1, count = 0;
-          i >= mostRecentIndex && count < threshold;
-          i -= 1
-        ) {
+        for (let i = n - 1, count = 0; i >= mostRecentIndex && count < threshold; i -= 1) {
           const msg = messages[i];
           if (!msg || msg.isError) continue;
           count += msg.content.length;
@@ -411,7 +386,7 @@ export const useChatStore = create<ChatStore>()(
       },
 
       resetSession() {
-        get().updateCurrentSession((session) => {
+        get().updateCurrentSession(session => {
           session.messages = [];
           session.memoryPrompt = "";
         });
@@ -425,10 +400,7 @@ export const useChatStore = create<ChatStore>()(
 
         // should summarize topic after chating more than 50 words
         const SUMMARIZE_MIN_LEN = 50;
-        if (
-          session.topic === DEFAULT_TOPIC &&
-          countMessages(messages) >= SUMMARIZE_MIN_LEN
-        ) {
+        if (session.topic === DEFAULT_TOPIC && countMessages(messages) >= SUMMARIZE_MIN_LEN) {
           const topicMessages = messages.concat(
             createMessage({
               role: "user",
@@ -442,22 +414,16 @@ export const useChatStore = create<ChatStore>()(
             },
             onFinish(message) {
               get().updateCurrentSession(
-                (session) =>
-                  (session.topic =
-                    message.length > 0 ? trimTopic(message) : DEFAULT_TOPIC),
+                session =>
+                  (session.topic = message.length > 0 ? trimTopic(message) : DEFAULT_TOPIC),
               );
             },
           });
         }
 
         const modelConfig = session.mask.modelConfig;
-        const summarizeIndex = Math.max(
-          session.lastSummarizeIndex,
-          session.clearContextIndex ?? 0,
-        );
-        let toBeSummarizedMsgs = messages
-          .filter((msg) => !msg.isError)
-          .slice(summarizeIndex);
+        const summarizeIndex = Math.max(session.lastSummarizeIndex, session.clearContextIndex ?? 0);
+        let toBeSummarizedMsgs = messages.filter(msg => !msg.isError).slice(summarizeIndex);
 
         const historyMsgLength = countMessages(toBeSummarizedMsgs);
 
@@ -506,7 +472,7 @@ export const useChatStore = create<ChatStore>()(
       },
 
       updateStat(message) {
-        get().updateCurrentSession((session) => {
+        get().updateCurrentSession(session => {
           session.stat.charCount += message.content.length;
           // TODO: should update chat count and word count
         });

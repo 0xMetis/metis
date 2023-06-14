@@ -1,8 +1,6 @@
 "use client";
 
-import { NewChat } from "/@/components/new-chat";
-
-require("../polyfill");
+// require("../polyfill");
 
 import { useState, useEffect } from "react";
 
@@ -13,7 +11,7 @@ import LoadingIcon from "../icons/three-dots.svg";
 
 import { getCSSVar, useMobileScreen } from "../utils";
 
-// import dynamic from "next/dynamic";
+import dynamic from "next/dynamic";
 import { Path, SlotID } from "../constant";
 import { ErrorBoundary } from "./error";
 
@@ -30,7 +28,7 @@ export function Loading(props: { noLogo?: boolean }) {
     </div>
   );
 }
-//
+
 // const Settings = dynamic(async () => (await import("./settings")).Settings, {
 //   loading: () => <Loading noLogo />,
 // });
@@ -38,10 +36,10 @@ export function Loading(props: { noLogo?: boolean }) {
 // const Chat = dynamic(async () => (await import("./chat")).Chat, {
 //   loading: () => <Loading noLogo />,
 // });
-//
-// const NewChat = dynamic(async () => (await import("./new-chat")).NewChat, {
-//   loading: () => <Loading noLogo />,
-// });
+
+const NewChat = dynamic(async () => (await import("./new-chat")).NewChat, {
+  loading: () => <Loading noLogo />,
+});
 
 // const MaskPage = dynamic(async () => (await import("./mask")).MaskPage, {
 //   loading: () => <Loading noLogo />,
@@ -74,7 +72,7 @@ export function useSwitchTheme() {
   }, [config.theme]);
 }
 
-const useHasHydrated = () => {
+export const useHasHydrated = () => {
   const [hasHydrated, setHasHydrated] = useState<boolean>(false);
 
   useEffect(() => {
