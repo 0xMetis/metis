@@ -15,7 +15,9 @@ const config = {
   css: {
     modules: true,
     preprocessorOptions: {
-
+      scss: {
+        // 配置选项
+      },
     },
   },
   test: {
