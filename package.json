@@ -60,6 +60,7 @@
     "vitest-dom": "^0.0.4"
   },
   "dependencies": {
+    "@hello-pangea/dnd": "^16.2.0",
     "electron-updater": "5.3.0",
     "emoji-picker-react": "^4.4.9",
     "fuse": "^0.4.0",

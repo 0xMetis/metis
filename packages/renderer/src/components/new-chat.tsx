@@ -13,8 +13,8 @@ import type { Mask } from "../store/mask";
 import { useMaskStore } from "../store/mask";
 import Locale from "../locales";
 import { useAppConfig, useChatStore } from "../store";
-// import { MaskAvatar } from "./mask";
-// import { useCommand } from "../command";
+import { MaskAvatar } from "./mask";
+import { useCommand } from "../command";
 
 function getIntersectionArea(aRect: DOMRect, bRect: DOMRect) {
   const xmin = Math.max(aRect.x, bRect.x);
@@ -33,7 +33,7 @@ function MaskItem(props: { mask: Mask; onClick?: () => void }) {
       className={styles["mask"]}
       onClick={props.onClick}
     >
-      {/*<MaskAvatar mask={props.mask} />*/}
+      <MaskAvatar mask={props.mask} />
       <div className={styles["mask-name"] + " one-line"}>{props.mask.name}</div>
     </div>
   );
@@ -100,16 +100,16 @@ export function NewChat() {
     setTimeout(() => navigate(Path.Chat), 1);
   };
 
-  // useCommand({
-  //   mask: (id) => {
-  //     try {
-  //       const mask = maskStore.get(parseInt(id));
-  //       startChat(mask ?? undefined);
-  //     } catch {
-  //       console.error("[New Chat] failed to create chat from mask id=", id);
-  //     }
-  //   },
-  // });
+  useCommand({
+    mask: id => {
+      try {
+        const mask = maskStore.get(parseInt(id));
+        startChat(mask ?? undefined);
+      } catch {
+        console.error("[New Chat] failed to create chat from mask id=", id);
+      }
+    },
+  });
 
   useEffect(() => {
     if (maskRef.current) {
@@ -131,7 +131,7 @@ export function NewChat() {
             onClick={() => {
               if (confirm(Locale.NewChat.ConfirmNoShow)) {
                 startChat();
-                config.update((config: any) => (config.dontShowMaskSplashScreen = true));
+                config.update(config => (config.dontShowMaskSplashScreen = true));
               }
             }}
           ></IconButton>
