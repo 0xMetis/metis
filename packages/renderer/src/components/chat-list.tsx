@@ -1,4 +1,4 @@
-import DeleteIcon from "../icons/delete.svg";
+import { ReactComponent as DeleteIcon } from "../icons/delete.svg";
 import { ReactComponent as BotIcon } from "../icons/bot.svg";
 
 import styles from "./home.module.scss";

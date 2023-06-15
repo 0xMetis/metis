@@ -25,12 +25,12 @@ import {
 
 import { Link, useNavigate } from "react-router-dom";
 import { useMobileScreen } from "../utils";
-// import dynamic from "next/dynamic";
+import dynamic from "next/dynamic";
 import { showToast } from "./ui-lib";
 
-// const ChatList = dynamic(async () => (await import("./chat-list")).ChatList, {
-//   loading: () => null,
-// });
+const ChatList = dynamic(async () => (await import("./chat-list")).ChatList, {
+  loading: () => null,
+});
 
 function useHotKey() {
   const chatStore = useChatStore();
@@ -146,7 +146,7 @@ export function SideBar(props: { className?: string }) {
           }
         }}
       >
-        {/*<ChatList narrow={shouldNarrow} />*/}
+        <ChatList narrow={shouldNarrow} />
       </div>
 
       <div className={styles["sidebar-tail"]}>
