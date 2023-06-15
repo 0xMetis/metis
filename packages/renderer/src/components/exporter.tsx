@@ -6,28 +6,22 @@ import { List, ListItem, Modal, Select, showToast } from "./ui-lib";
 import { IconButton } from "./button";
 import { copyToClipboard, downloadAs, useMobileScreen } from "../utils";
 
-import { ReactComponent as CopyIcon } from "../icons/copy.svg";
-import { ReactComponent as LoadingIcon } from "../icons/three-dots.svg";
-import { ReactComponent as ChatGptIcon } from "../icons/chatgpt.png";
-import { ReactComponent as ShareIcon } from "../icons/share.svg";
-import { ReactComponent as BotIcon } from "../icons/bot.png";
+import CopyIcon from "../icons/copy.svg";
+import LoadingIcon from "../icons/three-dots.svg";
+import ChatGptIcon from "../icons/chatgpt.png";
+import ShareIcon from "../icons/share.svg";
+import BotIcon from "../icons/bot.png";
 
 import DownloadIcon from "../icons/download.svg";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { MessageSelector, useMessageSelector } from "./message-selector";
 import { Avatar } from "./emoji";
-import dynamic from "next/dynamic";
-import NextImage from "next/image";
-
+import { Markdown } from "./markdown";
 import { toBlob, toJpeg, toPng } from "html-to-image";
 import { DEFAULT_MASK_AVATAR } from "../store/mask";
 import { api } from "../client/api";
 import { prettyObject } from "../utils/format";
 import { EXPORT_MESSAGE_CLASS_NAME } from "../constant";
-
-const Markdown = dynamic(async () => (await import("./markdown")).Markdown, {
-  loading: () => <LoadingIcon />,
-});
 
 export function ExportMessageModal(props: { onClose: () => void }) {
   return (
@@ -200,7 +194,8 @@ export function MessageExporter() {
       {currentStep.value === "preview" && (
         <div className={styles["message-exporter-body"]}>
           {exportConfig.format === "text" ? (
-            <MarkdownPreviewer
+            <
+              Previewer
               messages={selectedMessages}
               topic={session.topic}
             />
@@ -344,8 +339,8 @@ export function PreviewActions(props: {
 function ExportAvatar(props: { avatar: string }) {
   if (props.avatar === DEFAULT_MASK_AVATAR) {
     return (
-      <NextImage
-        src={BotIcon.src}
+      <img
+        src={BotIcon}
         width={30}
         height={30}
         alt="bot"
@@ -425,7 +420,7 @@ export function ImagePreviewer(props: { messages: ChatMessage[]; topic: string }
       >
         <div className={styles["chat-info"]}>
           <div className={styles["logo"] + " no-dark"}>
-            <NextImage
+            <img
               src={ChatGptIcon.src}
               alt="logo"
               width={50}

@@ -11,7 +11,10 @@ import { ReactComponent as LoadingIcon } from "../icons/three-dots.svg";
 
 import { getCSSVar, useMobileScreen } from "../utils";
 
-import dynamic from "next/dynamic";
+import { Settings } from "./settings";
+import { Chat } from "./chat";
+import { NewChat } from "./new-chat";
+import { MaskPage } from "./mask";
 import { Path, SlotID } from "../constant";
 import { ErrorBoundary } from "./error";
 
@@ -30,21 +33,21 @@ export function Loading(props: { noLogo?: boolean }) {
   );
 }
 
-const Settings = dynamic(async () => (await import("./settings")).Settings, {
-  loading: () => <Loading noLogo />,
-});
-
-const Chat = dynamic(async () => (await import("./chat")).Chat, {
-  loading: () => <Loading noLogo />,
-});
-
-const NewChat = dynamic(async () => (await import("./new-chat")).NewChat, {
-  loading: () => <Loading noLogo />,
-});
-
-const MaskPage = dynamic(async () => (await import("./mask")).MaskPage, {
-  loading: () => <Loading noLogo />,
-});
+//const Settings = dynamic(async () => (await import("./settings")).Settings, {
+//  loading: () => <Loading noLogo />,
+//});
+//
+//const Chat = dynamic(async () => (await import("./chat")).Chat, {
+//  loading: () => <Loading noLogo />,
+//});
+//
+//const NewChat = dynamic(async () => (await import("./new-chat")).NewChat, {
+//  loading: () => <Loading noLogo />,
+//});
+//
+//const MaskPage = dynamic(async () => (await import("./mask")).MaskPage, {
+//  loading: () => <Loading noLogo />,
+//});
 
 export function useSwitchTheme() {
   const config = useAppConfig();

@@ -13,10 +13,9 @@ const config = {
     },
   },
   css: {
+    modules: true,
     preprocessorOptions: {
-      scss: {
-        additionalData: '@import "@/assets/scss/global.scss"',
-      },
+
     },
   },
   test: {

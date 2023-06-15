@@ -43,7 +43,7 @@ import {
   useMobileScreen,
 } from "../utils";
 
-import dynamic from "next/dynamic";
+import { Markdown } from "./markdown";
 
 import { ChatControllerPool } from "../client/controller";
 import type { Prompt } from "../store/prompt";
@@ -63,10 +63,6 @@ import { useMaskStore } from "../store/mask";
 import { useCommand } from "../command";
 import { prettyObject } from "../utils/format";
 import { ExportMessageModal } from "./exporter";
-
-const Markdown = dynamic(async () => (await import("./markdown")).Markdown, {
-  loading: () => <LoadingIcon />,
-});
 
 export function SessionConfigModel(props: { onClose: () => void }) {
   const chatStore = useChatStore();
@@ -355,6 +351,7 @@ export function ChatActions(props: {
 
   // switch themes
   const theme = config.theme;
+
   function nextTheme() {
     const themes = [Theme.Auto, Theme.Light, Theme.Dark];
     const themeIndex = themes.indexOf(theme);

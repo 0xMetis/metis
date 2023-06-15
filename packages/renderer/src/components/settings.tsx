@@ -25,7 +25,7 @@ import {
 
 import Locale, { AllLangs, ALL_LANG_OPTIONS, changeLang, getLang } from "../locales";
 import { copyToClipboard } from "../utils";
-import Link from "next/link";
+import { Link } from "react-router-dom";
 import { Path, UPDATE_URL } from "../constant";
 import type { Prompt } from "../store/prompt";
 import { SearchService, usePromptStore } from "../store/prompt";
@@ -220,6 +220,7 @@ export function Settings() {
     subscription: updateStore.subscription,
   };
   const [loadingUsage, setLoadingUsage] = useState(false);
+
   function checkUsage(force = false) {
     setLoadingUsage(true);
     updateStore.updateUsage(force).finally(() => {
@@ -340,7 +341,7 @@ export function Settings() {
               <LoadingIcon />
             ) : hasNewVersion ? (
               <Link
-                href={UPDATE_URL}
+                to={UPDATE_URL}
                 target="_blank"
                 className="link"
               >
