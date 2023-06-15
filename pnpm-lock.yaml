@@ -22,6 +22,9 @@ dependencies:
   react-router-dom:
     specifier: ^6.12.1
     version: 6.12.1(react-dom@18.2.0)(react@18.2.0)
+  spark-md5:
+    specifier: ^3.0.2
+    version: registry.npmmirror.com/spark-md5@3.0.2
   use-debounce:
     specifier: ^9.0.4
     version: registry.npmmirror.com/use-debounce@9.0.4(react@18.2.0)
@@ -6683,6 +6686,12 @@ packages:
     version: 0.6.1
     engines: {node: '>=0.10.0'}
     dev: true
+
+  registry.npmmirror.com/spark-md5@3.0.2:
+    resolution: {integrity: sha512-wcFzz9cDfbuqe0FZzfi2or1sgyIrsDwmPwfZC4hiNidPdPINjeUwNfv5kldczoEAcjl9Y1L3SM7Uz2PUEQzxQw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/spark-md5/-/spark-md5-3.0.2.tgz}
+    name: spark-md5
+    version: 3.0.2
+    dev: false
 
   registry.npmmirror.com/stop-iteration-iterator@1.0.0:
     resolution: {integrity: sha512-iCGQj+0l0HOdZ2AEeBADlsRC+vsnDsZsbdSiH1yNSjcfKM7fdpCMfqAL/dwF5BLiw/XhRft/Wax6zQbhq2BcjQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/stop-iteration-iterator/-/stop-iteration-iterator-1.0.0.tgz}
