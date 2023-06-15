@@ -6,8 +6,8 @@ import { useState, useEffect } from "react";
 
 import styles from "./home.module.scss";
 
-import BotIcon from "../icons/bot.svg";
-import LoadingIcon from "../icons/three-dots.svg";
+import { ReactComponent as BotIcon } from "../icons/bot.svg";
+import { ReactComponent as LoadingIcon } from "../icons/three-dots.svg";
 
 import { getCSSVar, useMobileScreen } from "../utils";
 
@@ -24,6 +24,7 @@ export function Loading(props: { noLogo?: boolean }) {
   return (
     <div className={styles["loading-content"] + " no-dark"}>
       {!props.noLogo && <BotIcon />}
+      {/* <img src={LoadingIcon} /> */}
       <LoadingIcon />
     </div>
   );
