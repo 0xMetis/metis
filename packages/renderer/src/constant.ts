@@ -1,4 +1,4 @@
-export const OWNER = "0xMetis";
+export const OWNER = "Yidadaa";
 export const REPO = "ChatGPT-Next-Web";
 export const REPO_URL = `https://github.com/${OWNER}/${REPO}`;
 export const ISSUE_URL = `https://github.com/${OWNER}/${REPO}/issues`;
@@ -45,3 +45,9 @@ export const LAST_INPUT_KEY = "last-input";
 export const REQUEST_TIMEOUT_MS = 60000;
 
 export const EXPORT_MESSAGE_CLASS_NAME = "export-markdown";
+
+export const OpenaiPath = {
+  ChatPath: "v1/chat/completions",
+  UsagePath: "dashboard/billing/usage",
+  SubsPath: "dashboard/billing/subscription",
+};

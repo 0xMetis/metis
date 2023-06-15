@@ -1,4 +1,4 @@
-import * as React from "react";
+import type * as React from "react";
 import styles from "./input-range.module.scss";
 
 interface InputRangeProps {
@@ -11,15 +11,7 @@ interface InputRangeProps {
   step: string;
 }
 
-export function InputRange({
-  onChange,
-  title,
-  value,
-  className,
-  min,
-  max,
-  step,
-}: InputRangeProps) {
+export function InputRange({ onChange, title, value, className, min, max, step }: InputRangeProps) {
   return (
     <div className={styles["input-range"] + ` ${className ?? ""}`}>
       {title || value}

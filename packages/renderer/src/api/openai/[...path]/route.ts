@@ -1,15 +1,13 @@
-import { OpenaiPath } from "@/app/constant";
-import { prettyObject } from "@/app/utils/format";
-import { NextRequest, NextResponse } from "next/server";
+import { OpenaiPath } from "/@/constant";
+import { prettyObject } from "/@/utils/format";
+import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 import { auth } from "../../auth";
 import { requestOpenai } from "../../common";
 
 const ALLOWD_PATH = new Set(Object.values(OpenaiPath));
 
-async function handle(
-  req: NextRequest,
-  { params }: { params: { path: string[] } },
-) {
+async function handle(req: NextRequest, { params }: { params: { path: string[] } }) {
   console.log("[OpenAI Route] params ", params);
 
   const subpath = params.path.join("/");
