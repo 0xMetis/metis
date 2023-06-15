@@ -5,11 +5,12 @@ import RemarkBreaks from "remark-breaks";
 import RehypeKatex from "rehype-katex";
 import RemarkGfm from "remark-gfm";
 import RehypeHighlight from "rehype-highlight";
-import { useRef, useState, RefObject, useEffect } from "react";
+import type { RefObject } from "react";
+import { useRef, useState, useEffect } from "react";
 import { copyToClipboard } from "../utils";
 import mermaid from "mermaid";
 
-import LoadingIcon from "../icons/three-dots.svg";
+import { ReactComponent as LoadingIcon } from "../icons/three-dots.svg";
 import React from "react";
 
 export function Mermaid(props: { code: string; onError: () => void }) {
@@ -21,7 +22,7 @@ export function Mermaid(props: { code: string; onError: () => void }) {
         .run({
           nodes: [ref.current],
         })
-        .catch((e) => {
+        .catch(e => {
           props.onError();
           console.error("[Mermaid] ", e.message);
         });
@@ -66,7 +67,12 @@ export function PreCode(props: { children: any }) {
   }, [props.children]);
 
   if (mermaidCode) {
-    return <Mermaid code={mermaidCode} onError={() => setMermaidCode("")} />;
+    return (
+      <Mermaid
+        code={mermaidCode}
+        onError={() => setMermaidCode("")}
+      />
+    );
   }
 
   return (
@@ -101,11 +107,16 @@ function _MarkDownContent(props: { content: string }) {
       ]}
       components={{
         pre: PreCode,
-        a: (aProps) => {
+        a: aProps => {
           const href = aProps.href || "";
           const isInternal = /^\/#/i.test(href);
           const target = isInternal ? "_self" : aProps.target ?? "_blank";
-          return <a {...aProps} target={target} />;
+          return (
+            <a
+              {...aProps}
+              target={target}
+            />
+          );
         },
       }}
     >
@@ -140,16 +151,12 @@ export function Markdown(
       const parentTop = parentBounds.top - twoScreenHeight;
       const parentBottom = parentBounds.bottom + twoScreenHeight;
       const isOverlap =
-        Math.max(parentTop, mdBounds.top) <=
-        Math.min(parentBottom, mdBounds.bottom);
+        Math.max(parentTop, mdBounds.top) <= Math.min(parentBottom, mdBounds.bottom);
       inView.current = isOverlap;
     }
 
     if (inView.current && md) {
-      renderedHeight.current = Math.max(
-        renderedHeight.current,
-        md.getBoundingClientRect().height,
-      );
+      renderedHeight.current = Math.max(renderedHeight.current, md.getBoundingClientRect().height);
     }
   };
 
@@ -160,21 +167,14 @@ export function Markdown(
       className="markdown-body"
       style={{
         fontSize: `${props.fontSize ?? 14}px`,
-        height:
-          !inView.current && renderedHeight.current > 0
-            ? renderedHeight.current
-            : "auto",
+        height: !inView.current && renderedHeight.current > 0 ? renderedHeight.current : "auto",
       }}
       ref={mdRef}
       onContextMenu={props.onContextMenu}
       onDoubleClickCapture={props.onDoubleClickCapture}
     >
       {inView.current &&
-        (props.loading ? (
-          <LoadingIcon />
-        ) : (
-          <MarkdownContent content={props.content} />
-        ))}
+        (props.loading ? <LoadingIcon /> : <MarkdownContent content={props.content} />)}
     </div>
   );
 }

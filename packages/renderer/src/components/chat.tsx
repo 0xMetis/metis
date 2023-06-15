@@ -2,26 +2,26 @@ import { useDebouncedCallback } from "use-debounce";
 import type React from "react";
 import { useState, useRef, useEffect, useLayoutEffect } from "react";
 
-import { SendWhiteIcon } from "../icons/send-white.svg";
-import { BrainIcon } from "../icons/brain.svg";
-import { RenameIcon } from "../icons/rename.svg";
-import { ExportIcon } from "../icons/share.svg";
-import { ReturnIcon } from "../icons/return.svg";
-import { CopyIcon } from "../icons/copy.svg";
-import { LoadingIcon } from "../icons/three-dots.svg";
-import { PromptIcon } from "../icons/prompt.svg";
-import { MaskIcon } from "../icons/mask.svg";
-import { MaxIcon } from "../icons/max.svg";
-import { MinIcon } from "../icons/min.svg";
-import { ResetIcon } from "../icons/reload.svg";
-import { BreakIcon } from "../icons/break.svg";
-import { SettingsIcon } from "../icons/chat-settings.svg";
+import { ReactComponent as SendWhiteIcon } from "../icons/send-white.svg";
+import { ReactComponent as BrainIcon } from "../icons/brain.svg";
+import { ReactComponent as RenameIcon } from "../icons/rename.svg";
+import { ReactComponent as ExportIcon } from "../icons/share.svg";
+import { ReactComponent as ReturnIcon } from "../icons/return.svg";
+import { ReactComponent as CopyIcon } from "../icons/copy.svg";
+import { ReactComponent as LoadingIcon } from "../icons/three-dots.svg";
+import { ReactComponent as PromptIcon } from "../icons/prompt.svg";
+import { ReactComponent as MaskIcon } from "../icons/mask.svg";
+import { ReactComponent as MaxIcon } from "../icons/max.svg";
+import { ReactComponent as MinIcon } from "../icons/min.svg";
+import { ReactComponent as ResetIcon } from "../icons/reload.svg";
+import { ReactComponent as BreakIcon } from "../icons/break.svg";
+import { ReactComponent as SettingsIcon } from "../icons/chat-settings.svg";
 
-import { LightIcon } from "../icons/light.svg";
-import { DarkIcon } from "../icons/dark.svg";
-import { AutoIcon } from "../icons/auto.svg";
-import { BottomIcon } from "../icons/bottom.svg";
-import { StopIcon } from "../icons/pause.svg";
+import { ReactComponent as LightIcon } from "../icons/light.svg";
+import { ReactComponent as DarkIcon } from "../icons/dark.svg";
+import { ReactComponent as AutoIcon } from "../icons/auto.svg";
+import { ReactComponent as BottomIcon } from "../icons/bottom.svg";
+import { ReactComponent as StopIcon } from "../icons/pause.svg";
 
 import type { ChatMessage } from "../store";
 import {

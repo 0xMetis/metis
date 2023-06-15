@@ -3,27 +3,30 @@ import { ErrorBoundary } from "./error";
 
 import styles from "./mask.module.scss";
 
-import DownloadIcon from "../icons/download.svg";
-import UploadIcon from "../icons/upload.svg";
-import EditIcon from "../icons/edit.svg";
-import AddIcon from "../icons/add.svg";
-import CloseIcon from "../icons/close.svg";
-import DeleteIcon from "../icons/delete.svg";
-import EyeIcon from "../icons/eye.svg";
-import CopyIcon from "../icons/copy.svg";
+import { ReactComponent as DownloadIcon } from "../icons/download.svg";
+import { ReactComponent as UploadIcon } from "../icons/upload.svg";
+import { ReactComponent as EditIcon } from "../icons/edit.svg";
+import { ReactComponent as AddIcon } from "../icons/add.svg";
+import { ReactComponent as CloseIcon } from "../icons/close.svg";
+import { ReactComponent as DeleteIcon } from "../icons/delete.svg";
+import { ReactComponent as EyeIcon } from "../icons/eye.svg";
+import { ReactComponent as CopyIcon } from "../icons/copy.svg";
 
-import { DEFAULT_MASK_AVATAR, Mask, useMaskStore } from "../store/mask";
-import { ChatMessage, ModelConfig, useAppConfig, useChatStore } from "../store";
+import type { Mask } from "../store/mask";
+import { DEFAULT_MASK_AVATAR, useMaskStore } from "../store/mask";
+import type { ChatMessage, ModelConfig } from "../store";
+import { useAppConfig, useChatStore } from "../store";
 import { ROLES } from "../client/api";
 import { Input, List, ListItem, Modal, Popover, Select } from "./ui-lib";
 import { Avatar, AvatarPicker } from "./emoji";
-import Locale, { AllLangs, ALL_LANG_OPTIONS, Lang } from "../locales";
+import type { Lang } from "../locales";
+import Locale, { AllLangs, ALL_LANG_OPTIONS } from "../locales";
 import { useNavigate } from "react-router-dom";
 
 import chatStyle from "./chat.module.scss";
 import { useEffect, useState } from "react";
 import { downloadAs, readFromFile } from "../utils";
-import { Updater } from "../typing";
+import type { Updater } from "../typing";
 import { ModelConfigList } from "./model-config";
 import { FileName, Path } from "../constant";
 import { BUILTIN_MASK_STORE } from "../masks";
@@ -50,7 +53,7 @@ export function MaskConfig(props: {
 
     const config = { ...props.mask.modelConfig };
     updater(config);
-    props.updateMask((mask) => {
+    props.updateMask(mask => {
       mask.modelConfig = config;
       // if user changed current session mask, it will disable auto sync
       mask.syncGlobalConfig = false;
@@ -63,10 +66,10 @@ export function MaskConfig(props: {
     <>
       <ContextPrompts
         context={props.mask.context}
-        updateContext={(updater) => {
+        updateContext={updater => {
           const context = props.mask.context.slice();
           updater(context);
-          props.updateMask((mask) => (mask.context = context));
+          props.updateMask(mask => (mask.context = context));
         }}
       />
 
@@ -75,8 +78,8 @@ export function MaskConfig(props: {
           <Popover
             content={
               <AvatarPicker
-                onEmojiClick={(emoji) => {
-                  props.updateMask((mask) => (mask.avatar = emoji));
+                onEmojiClick={emoji => {
+                  props.updateMask(mask => (mask.avatar = emoji));
                   setShowPicker(false);
                 }}
               ></AvatarPicker>
@@ -96,8 +99,8 @@ export function MaskConfig(props: {
           <input
             type="text"
             value={props.mask.name}
-            onInput={(e) =>
-              props.updateMask((mask) => {
+            onInput={e =>
+              props.updateMask(mask => {
                 mask.name = e.currentTarget.value;
               })
             }
@@ -110,8 +113,8 @@ export function MaskConfig(props: {
           <input
             type="checkbox"
             checked={props.mask.hideContext}
-            onChange={(e) => {
-              props.updateMask((mask) => {
+            onChange={e => {
+              props.updateMask(mask => {
                 mask.hideContext = e.currentTarget.checked;
               });
             }}
@@ -125,12 +128,9 @@ export function MaskConfig(props: {
             <input
               type="checkbox"
               checked={props.mask.syncGlobalConfig}
-              onChange={(e) => {
-                if (
-                  e.currentTarget.checked &&
-                  confirm(Locale.Mask.Config.Sync.Confirm)
-                ) {
-                  props.updateMask((mask) => {
+              onChange={e => {
+                if (e.currentTarget.checked && confirm(Locale.Mask.Config.Sync.Confirm)) {
+                  props.updateMask(mask => {
                     mask.syncGlobalConfig = e.currentTarget.checked;
                     mask.modelConfig = { ...globalConfig.modelConfig };
                   });
@@ -165,15 +165,18 @@ function ContextPromptItem(props: {
         <Select
           value={props.prompt.role}
           className={chatStyle["context-role"]}
-          onChange={(e) =>
+          onChange={e =>
             props.update({
               ...props.prompt,
               role: e.target.value as any,
             })
           }
         >
-          {ROLES.map((r) => (
-            <option key={r} value={r}>
+          {ROLES.map(r => (
+            <option
+              key={r}
+              value={r}
+            >
               {r}
             </option>
           ))}
@@ -186,7 +189,7 @@ function ContextPromptItem(props: {
         rows={focusingInput ? 5 : 1}
         onFocus={() => setFocusingInput(true)}
         onBlur={() => setFocusingInput(false)}
-        onInput={(e) =>
+        onInput={e =>
           props.update({
             ...props.prompt,
             content: e.currentTarget.value as any,
@@ -212,25 +215,28 @@ export function ContextPrompts(props: {
   const context = props.context;
 
   const addContextPrompt = (prompt: ChatMessage) => {
-    props.updateContext((context) => context.push(prompt));
+    props.updateContext(context => context.push(prompt));
   };
 
   const removeContextPrompt = (i: number) => {
-    props.updateContext((context) => context.splice(i, 1));
+    props.updateContext(context => context.splice(i, 1));
   };
 
   const updateContextPrompt = (i: number, prompt: ChatMessage) => {
-    props.updateContext((context) => (context[i] = prompt));
+    props.updateContext(context => (context[i] = prompt));
   };
 
   return (
     <>
-      <div className={chatStyle["context-prompt"]} style={{ marginBottom: 20 }}>
+      <div
+        className={chatStyle["context-prompt"]}
+        style={{ marginBottom: 20 }}
+      >
         {context.map((c, i) => (
           <ContextPromptItem
             key={i}
             prompt={c}
-            update={(prompt) => updateContextPrompt(i, prompt)}
+            update={prompt => updateContextPrompt(i, prompt)}
             remove={() => removeContextPrompt(i)}
           />
         ))}
@@ -263,9 +269,7 @@ export function MaskPage() {
 
   const [filterLang, setFilterLang] = useState<Lang>();
 
-  const allMasks = maskStore
-    .getAll()
-    .filter((m) => !filterLang || m.lang === filterLang);
+  const allMasks = maskStore.getAll().filter(m => !filterLang || m.lang === filterLang);
 
   const [searchMasks, setSearchMasks] = useState<Mask[]>([]);
   const [searchText, setSearchText] = useState("");
@@ -275,7 +279,7 @@ export function MaskPage() {
   const onSearch = (text: string) => {
     setSearchText(text);
     if (text.length > 0) {
-      const result = allMasks.filter((m) => m.name.includes(text));
+      const result = allMasks.filter(m => m.name.includes(text));
       setSearchMasks(result);
     } else {
       setSearchMasks(allMasks);
@@ -283,8 +287,7 @@ export function MaskPage() {
   };
 
   const [editingMaskId, setEditingMaskId] = useState<number | undefined>();
-  const editingMask =
-    maskStore.get(editingMaskId) ?? BUILTIN_MASK_STORE.get(editingMaskId);
+  const editingMask = maskStore.get(editingMaskId) ?? BUILTIN_MASK_STORE.get(editingMaskId);
   const closeMaskModal = () => setEditingMaskId(undefined);
 
   const downloadAll = () => {
@@ -292,7 +295,7 @@ export function MaskPage() {
   };
 
   const importFromFile = () => {
-    readFromFile().then((content) => {
+    readFromFile().then(content => {
       try {
         const importMasks = JSON.parse(content);
         if (Array.isArray(importMasks)) {
@@ -316,9 +319,7 @@ export function MaskPage() {
       <div className={styles["mask-page"]}>
         <div className="window-header">
           <div className="window-header-title">
-            <div className="window-header-main-title">
-              {Locale.Mask.Page.Title}
-            </div>
+            <div className="window-header-main-title">{Locale.Mask.Page.Title}</div>
             <div className="window-header-submai-title">
               {Locale.Mask.Page.SubTitle(allMasks.length)}
             </div>
@@ -356,12 +357,12 @@ export function MaskPage() {
               className={styles["search-bar"]}
               placeholder={Locale.Mask.Page.Search}
               autoFocus
-              onInput={(e) => onSearch(e.currentTarget.value)}
+              onInput={e => onSearch(e.currentTarget.value)}
             />
             <Select
               className={styles["mask-filter-lang"]}
               value={filterLang ?? Locale.Settings.Lang.All}
-              onChange={(e) => {
+              onChange={e => {
                 const value = e.currentTarget.value;
                 if (value === Locale.Settings.Lang.All) {
                   setFilterLang(undefined);
@@ -370,11 +371,17 @@ export function MaskPage() {
                 }
               }}
             >
-              <option key="all" value={Locale.Settings.Lang.All}>
+              <option
+                key="all"
+                value={Locale.Settings.Lang.All}
+              >
                 {Locale.Settings.Lang.All}
               </option>
-              {AllLangs.map((lang) => (
-                <option value={lang} key={lang}>
+              {AllLangs.map(lang => (
+                <option
+                  value={lang}
+                  key={lang}
+                >
                   {ALL_LANG_OPTIONS[lang]}
                 </option>
               ))}
@@ -393,8 +400,11 @@ export function MaskPage() {
           </div>
 
           <div>
-            {masks.map((m) => (
-              <div className={styles["mask-item"]} key={m.id}>
+            {masks.map(m => (
+              <div
+                className={styles["mask-item"]}
+                key={m.id}
+              >
                 <div className={styles["mask-header"]}>
                   <div className={styles["mask-icon"]}>
                     <MaskAvatar mask={m} />
@@ -459,12 +469,7 @@ export function MaskPage() {
                 text={Locale.Mask.EditModal.Download}
                 key="export"
                 bordered
-                onClick={() =>
-                  downloadAs(
-                    JSON.stringify(editingMask),
-                    `${editingMask.name}.json`,
-                  )
-                }
+                onClick={() => downloadAs(JSON.stringify(editingMask), `${editingMask.name}.json`)}
               />,
               <IconButton
                 key="copy"
@@ -481,9 +486,7 @@ export function MaskPage() {
           >
             <MaskConfig
               mask={editingMask}
-              updateMask={(updater) =>
-                maskStore.update(editingMaskId!, updater)
-              }
+              updateMask={updater => maskStore.update(editingMaskId!, updater)}
               readonly={editingMask.builtin}
             />
           </Modal>

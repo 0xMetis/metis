@@ -3,8 +3,8 @@ import EmojiPicker, { Emoji, Theme as EmojiTheme } from "emoji-picker-react";
 
 import type { ModelType } from "../store";
 
-import { BotIcon } from "../icons/bot.svg";
-import { BlackBotIcon } from "../icons/black-bot.svg";
+import { ReactComponent as BotIcon } from "../icons/bot.svg";
+import { ReactComponent as BlackBotIcon } from "../icons/black-bot.svg";
 
 export function getEmojiUrl(unified: string, style: EmojiStyle) {
   return `https://cdn.staticfile.org/emoji-datasource-apple/14.0.0/img/${style}/64/${unified}.png`;

@@ -114,7 +114,7 @@ export function SideBar(props: { className?: string }) {
       className={`${styles.sidebar} ${props.className} ${shouldNarrow && styles["narrow-sidebar"]}`}
     >
       <div className={styles["sidebar-header"]}>
-        <div className={styles["sidebar-title"]}>ChatGPT Next</div>
+        <div className={styles["sidebar-title"]}>MetisAI</div>
         <div className={styles["sidebar-sub-title"]}>Build your own AI assistant.</div>
         <div className={styles["sidebar-logo"] + " no-dark"}>
           <ChatGptIcon />
@@ -173,6 +173,7 @@ export function SideBar(props: { className?: string }) {
             <a
               href={REPO_URL}
               target="_blank"
+              rel="noreferrer"
             >
               <IconButton
                 icon={<GithubIcon />}

@@ -1,12 +1,14 @@
 import styles from "./ui-lib.module.scss";
-import LoadingIcon from "../icons/three-dots.svg";
-import CloseIcon from "../icons/close.svg";
-import EyeIcon from "../icons/eye.svg";
-import EyeOffIcon from "../icons/eye-off.svg";
-import DownIcon from "../icons/down.svg";
+import { ReactComponent as LoadingIcon } from "../icons/three-dots.svg";
+import { ReactComponent as CloseIcon } from "../icons/close.svg";
+import { ReactComponent as EyeIcon } from "../icons/eye.svg";
+import { ReactComponent as EyeOffIcon } from "../icons/eye-off.svg";
+import { ReactComponent as DownIcon } from "../icons/down.svg";
 
 import { createRoot } from "react-dom/client";
-import React, { HTMLProps, useEffect, useState } from "react";
+import type { HTMLProps } from "react";
+import type React from "react";
+import { useEffect, useState } from "react";
 import { IconButton } from "./button";
 
 export function Popover(props: {

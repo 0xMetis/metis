@@ -2,23 +2,15 @@ import { useState, useEffect, useMemo, HTMLProps, useRef } from "react";
 
 import styles from "./settings.module.scss";
 
-import ResetIcon from "../icons/reload.svg";
-import AddIcon from "../icons/add.svg";
-import CloseIcon from "../icons/close.svg";
-import CopyIcon from "../icons/copy.svg";
-import ClearIcon from "../icons/clear.svg";
-import LoadingIcon from "../icons/three-dots.svg";
-import EditIcon from "../icons/edit.svg";
-import EyeIcon from "../icons/eye.svg";
-import {
-  Input,
-  List,
-  ListItem,
-  Modal,
-  PasswordInput,
-  Popover,
-  Select,
-} from "./ui-lib";
+import { ReactComponent as ResetIcon } from "../icons/reload.svg";
+import { ReactComponent as AddIcon } from "../icons/add.svg";
+import { ReactComponent as CloseIcon } from "../icons/close.svg";
+import { ReactComponent as CopyIcon } from "../icons/copy.svg";
+import { ReactComponent as ClearIcon } from "../icons/clear.svg";
+import { ReactComponent as LoadingIcon } from "../icons/three-dots.svg";
+import { ReactComponent as EditIcon } from "../icons/edit.svg";
+import { ReactComponent as EyeIcon } from "../icons/eye.svg";
+import { Input, List, ListItem, Modal, PasswordInput, Popover, Select } from "./ui-lib";
 import { ModelConfigList } from "./model-config";
 
 import { IconButton } from "./button";
@@ -31,16 +23,12 @@ import {
   useAppConfig,
 } from "../store";
 
-import Locale, {
-  AllLangs,
-  ALL_LANG_OPTIONS,
-  changeLang,
-  getLang,
-} from "../locales";
+import Locale, { AllLangs, ALL_LANG_OPTIONS, changeLang, getLang } from "../locales";
 import { copyToClipboard } from "../utils";
 import Link from "next/link";
 import { Path, UPDATE_URL } from "../constant";
-import { Prompt, SearchService, usePromptStore } from "../store/prompt";
+import type { Prompt } from "../store/prompt";
+import { SearchService, usePromptStore } from "../store/prompt";
 import { ErrorBoundary } from "./error";
 import { InputRange } from "./input-range";
 import { useNavigate } from "react-router-dom";
@@ -70,11 +58,8 @@ function EditPromptModal(props: { id: number; onClose: () => void }) {
             value={prompt.title}
             readOnly={!prompt.isUser}
             className={styles["edit-prompt-title"]}
-            onInput={(e) =>
-              promptStore.update(
-                props.id,
-                (prompt) => (prompt.title = e.currentTarget.value),
-              )
+            onInput={e =>
+              promptStore.update(props.id, prompt => (prompt.title = e.currentTarget.value))
             }
           ></input>
           <Input
@@ -82,11 +67,8 @@ function EditPromptModal(props: { id: number; onClose: () => void }) {
             readOnly={!prompt.isUser}
             className={styles["edit-prompt-content"]}
             rows={10}
-            onInput={(e) =>
-              promptStore.update(
-                props.id,
-                (prompt) => (prompt.content = e.currentTarget.value),
-              )
+            onInput={e =>
+              promptStore.update(props.id, prompt => (prompt.content = e.currentTarget.value))
             }
           ></Input>
         </div>
@@ -141,17 +123,18 @@ function UserPromptModal(props: { onClose?: () => void }) {
             className={styles["user-prompt-search"]}
             placeholder={Locale.Settings.Prompt.Modal.Search}
             value={searchInput}
-            onInput={(e) => setSearchInput(e.currentTarget.value)}
+            onInput={e => setSearchInput(e.currentTarget.value)}
           ></input>
 
           <div className={styles["user-prompt-list"]}>
             {prompts.map((v, _) => (
-              <div className={styles["user-prompt-item"]} key={v.id ?? v.title}>
+              <div
+                className={styles["user-prompt-item"]}
+                key={v.id ?? v.title}
+              >
                 <div className={styles["user-prompt-header"]}>
                   <div className={styles["user-prompt-title"]}>{v.title}</div>
-                  <div className={styles["user-prompt-content"] + " one-line"}>
-                    {v.content}
-                  </div>
+                  <div className={styles["user-prompt-content"] + " one-line"}>{v.content}</div>
                 </div>
 
                 <div className={styles["user-prompt-buttons"]}>
@@ -203,11 +186,9 @@ function formatVersionDate(t: string) {
   const month = d.getUTCMonth() + 1;
   const day = d.getUTCDate();
 
-  return [
-    year.toString(),
-    month.toString().padStart(2, "0"),
-    day.toString().padStart(2, "0"),
-  ].join("");
+  return [year.toString(), month.toString().padStart(2, "0"), day.toString().padStart(2, "0")].join(
+    "",
+  );
 }
 
 export function Settings() {
@@ -230,14 +211,8 @@ export function Settings() {
       setCheckingUpdate(false);
     });
 
-    console.log(
-      "[Update] local version ",
-      new Date(+updateStore.version).toLocaleString(),
-    );
-    console.log(
-      "[Update] remote version ",
-      new Date(+updateStore.remoteVersion).toLocaleString(),
-    );
+    console.log("[Update] local version ", new Date(+updateStore.version).toLocaleString());
+    console.log("[Update] remote version ", new Date(+updateStore.remoteVersion).toLocaleString());
   }
 
   const usage = {
@@ -289,12 +264,8 @@ export function Settings() {
     <ErrorBoundary>
       <div className="window-header">
         <div className="window-header-title">
-          <div className="window-header-main-title">
-            {Locale.Settings.Title}
-          </div>
-          <div className="window-header-sub-title">
-            {Locale.Settings.SubTitle}
-          </div>
+          <div className="window-header-main-title">{Locale.Settings.Title}</div>
+          <div className="window-header-sub-title">{Locale.Settings.SubTitle}</div>
         </div>
         <div className="window-actions">
           <div className="window-action-button">
@@ -339,7 +310,7 @@ export function Settings() {
               content={
                 <AvatarPicker
                   onEmojiClick={(avatar: string) => {
-                    updateConfig((config) => (config.avatar = avatar));
+                    updateConfig(config => (config.avatar = avatar));
                     setShowEmojiPicker(false);
                   }}
                 />
@@ -368,7 +339,11 @@ export function Settings() {
             {checkingUpdate ? (
               <LoadingIcon />
             ) : hasNewVersion ? (
-              <Link href={UPDATE_URL} target="_blank" className="link">
+              <Link
+                href={UPDATE_URL}
+                target="_blank"
+                className="link"
+              >
                 {Locale.Settings.Update.GoToUpdate}
               </Link>
             ) : (
@@ -383,15 +358,15 @@ export function Settings() {
           <ListItem title={Locale.Settings.SendKey}>
             <Select
               value={config.submitKey}
-              onChange={(e) => {
-                updateConfig(
-                  (config) =>
-                    (config.submitKey = e.target.value as any as SubmitKey),
-                );
+              onChange={e => {
+                updateConfig(config => (config.submitKey = e.target.value as any as SubmitKey));
               }}
             >
-              {Object.values(SubmitKey).map((v) => (
-                <option value={v} key={v}>
+              {Object.values(SubmitKey).map(v => (
+                <option
+                  value={v}
+                  key={v}
+                >
                   {v}
                 </option>
               ))}
@@ -401,14 +376,15 @@ export function Settings() {
           <ListItem title={Locale.Settings.Theme}>
             <Select
               value={config.theme}
-              onChange={(e) => {
-                updateConfig(
-                  (config) => (config.theme = e.target.value as any as Theme),
-                );
+              onChange={e => {
+                updateConfig(config => (config.theme = e.target.value as any as Theme));
               }}
             >
-              {Object.values(Theme).map((v) => (
-                <option value={v} key={v}>
+              {Object.values(Theme).map(v => (
+                <option
+                  value={v}
+                  key={v}
+                >
                   {v}
                 </option>
               ))}
@@ -418,12 +394,15 @@ export function Settings() {
           <ListItem title={Locale.Settings.Lang.Name}>
             <Select
               value={getLang()}
-              onChange={(e) => {
+              onChange={e => {
                 changeLang(e.target.value as any);
               }}
             >
-              {AllLangs.map((lang) => (
-                <option value={lang} key={lang}>
+              {AllLangs.map(lang => (
+                <option
+                  value={lang}
+                  key={lang}
+                >
                   {ALL_LANG_OPTIONS[lang]}
                 </option>
               ))}
@@ -440,11 +419,8 @@ export function Settings() {
               min="12"
               max="18"
               step="1"
-              onChange={(e) =>
-                updateConfig(
-                  (config) =>
-                    (config.fontSize = Number.parseInt(e.currentTarget.value)),
-                )
+              onChange={e =>
+                updateConfig(config => (config.fontSize = Number.parseInt(e.currentTarget.value)))
               }
             ></InputRange>
           </ListItem>
@@ -456,11 +432,8 @@ export function Settings() {
             <input
               type="checkbox"
               checked={config.sendPreviewBubble}
-              onChange={(e) =>
-                updateConfig(
-                  (config) =>
-                    (config.sendPreviewBubble = e.currentTarget.checked),
-                )
+              onChange={e =>
+                updateConfig(config => (config.sendPreviewBubble = e.currentTarget.checked))
               }
             ></input>
           </ListItem>
@@ -472,12 +445,8 @@ export function Settings() {
             <input
               type="checkbox"
               checked={!config.dontShowMaskSplashScreen}
-              onChange={(e) =>
-                updateConfig(
-                  (config) =>
-                    (config.dontShowMaskSplashScreen =
-                      !e.currentTarget.checked),
-                )
+              onChange={e =>
+                updateConfig(config => (config.dontShowMaskSplashScreen = !e.currentTarget.checked))
               }
             ></input>
           </ListItem>
@@ -493,7 +462,7 @@ export function Settings() {
                 value={accessStore.accessCode}
                 type="text"
                 placeholder={Locale.Settings.AccessCode.Placeholder}
-                onChange={(e) => {
+                onChange={e => {
                   accessStore.updateCode(e.currentTarget.value);
                 }}
               />
@@ -511,7 +480,7 @@ export function Settings() {
                 value={accessStore.token}
                 type="text"
                 placeholder={Locale.Settings.Token.Placeholder}
-                onChange={(e) => {
+                onChange={e => {
                   accessStore.updateToken(e.currentTarget.value);
                 }}
               />
@@ -551,21 +520,15 @@ export function Settings() {
             <input
               type="checkbox"
               checked={config.disablePromptHint}
-              onChange={(e) =>
-                updateConfig(
-                  (config) =>
-                    (config.disablePromptHint = e.currentTarget.checked),
-                )
+              onChange={e =>
+                updateConfig(config => (config.disablePromptHint = e.currentTarget.checked))
               }
             ></input>
           </ListItem>
 
           <ListItem
             title={Locale.Settings.Prompt.List}
-            subTitle={Locale.Settings.Prompt.ListCount(
-              builtinCount,
-              customCount,
-            )}
+            subTitle={Locale.Settings.Prompt.ListCount(builtinCount, customCount)}
           >
             <IconButton
               icon={<EditIcon />}
@@ -578,17 +541,15 @@ export function Settings() {
         <List>
           <ModelConfigList
             modelConfig={config.modelConfig}
-            updateConfig={(updater) => {
+            updateConfig={updater => {
               const modelConfig = { ...config.modelConfig };
               updater(modelConfig);
-              config.update((config) => (config.modelConfig = modelConfig));
+              config.update(config => (config.modelConfig = modelConfig));
             }}
           />
         </List>
 
-        {shouldShowPromptModal && (
-          <UserPromptModal onClose={() => setShowPromptModal(false)} />
-        )}
+        {shouldShowPromptModal && <UserPromptModal onClose={() => setShowPromptModal(false)} />}
       </div>
     </ErrorBoundary>
   );

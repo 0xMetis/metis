@@ -6,11 +6,11 @@ import { List, ListItem, Modal, Select, showToast } from "./ui-lib";
 import { IconButton } from "./button";
 import { copyToClipboard, downloadAs, useMobileScreen } from "../utils";
 
-import { CopyIcon } from "../icons/copy.svg";
-import { LoadingIcon } from "../icons/three-dots.svg";
-import { ChatGptIcon } from "../icons/chatgpt.png";
-import { ShareIcon } from "../icons/share.svg";
-import { BotIcon } from "../icons/bot.png";
+import { ReactComponent as CopyIcon } from "../icons/copy.svg";
+import { ReactComponent as LoadingIcon } from "../icons/three-dots.svg";
+import { ReactComponent as ChatGptIcon } from "../icons/chatgpt.png";
+import { ReactComponent as ShareIcon } from "../icons/share.svg";
+import { ReactComponent as BotIcon } from "../icons/bot.png";
 
 import DownloadIcon from "../icons/download.svg";
 import { useEffect, useMemo, useRef, useState } from "react";
