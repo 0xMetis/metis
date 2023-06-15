@@ -69,6 +69,7 @@
     "katex": "^0.16.7",
     "katex.min.css": "link:katex/dist/katex.min.css",
     "mermaid": "^10.2.3",
+    "next": "^13.4.5",
     "react-markdown": "^8.0.7",
     "react-router-dom": "^6.12.1",
     "rehype-highlight": "^6.0.0",
