@@ -690,20 +690,20 @@ export function Chat() {
       className={styles.chat}
       key={session.id}
     >
-      <div className="window-header">
-        <div className="window-header-title">
+      <div className={`${styles["window-header"]}`}>
+        <div className={`${styles["window-header-title"]}`}>
           <div
-            className={`window-header-main-title " ${styles["chat-body-title"]}`}
+            className={`${styles["window-header-main-title"]}  ${styles["chat-body-title"]}`}
             onClickCapture={renameSession}
           >
             {!session.topic ? DEFAULT_TOPIC : session.topic}
           </div>
-          <div className="window-header-sub-title">
+          <div className={`${styles["window-header-sub-title"]}`}>
             {Locale.Chat.SubTitle(session.messages.length)}
           </div>
         </div>
-        <div className="window-actions">
-          <div className={"window-action-button" + " " + styles.mobile}>
+        <div className={`${styles["window-actions"]}`}>
+          <div className={`${styles["window-action-button"]}` + " " + styles.mobile}>
             <IconButton
               icon={<ReturnIcon />}
               bordered
@@ -711,14 +711,14 @@ export function Chat() {
               onClick={() => navigate(Path.Home)}
             />
           </div>
-          <div className="window-action-button">
+          <div className={`${styles["window-action-button"]}`}>
             <IconButton
               icon={<RenameIcon />}
               bordered
               onClick={renameSession}
             />
           </div>
-          <div className="window-action-button">
+          <div className={`${styles["window-action-button"]}`}>
             <IconButton
               icon={<ExportIcon />}
               bordered
@@ -729,7 +729,7 @@ export function Chat() {
             />
           </div>
           {!isMobileScreen && (
-            <div className="window-action-button">
+            <div className={`${styles["window-action-button"]}`}>
               <IconButton
                 icon={config.tightBorder ? <MinIcon /> : <MaxIcon />}
                 bordered

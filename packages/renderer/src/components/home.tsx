@@ -134,7 +134,7 @@ function Screen() {
               />
               <Route
                 path={Path.Masks}
-                element={MaskPage}
+                element={<MaskPage />}
               />
               <Route
                 path={Path.Chat}

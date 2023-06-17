@@ -12,14 +12,6 @@ const config = {
       "@": resolve("./src"),
     },
   },
-  css: {
-    modules: true,
-    preprocessorOptions: {
-      scss: {
-        // 配置选项
-      },
-    },
-  },
   test: {
     /**
      * By default, vitest searches for the test files in all packages.

@@ -23,6 +23,15 @@ const config = {
       "/@/": join(PACKAGE_ROOT, "src") + "/",
     },
   },
+  css: {
+    modules: true,
+    preprocessorOptions: {
+      scss: {
+        // 配置选项
+        additionalData: `@import "/@/styles/globals"; `,
+      },
+    },
+  },
   base: "",
   server: {
     fs: {

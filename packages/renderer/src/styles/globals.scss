@@ -1,5 +1,7 @@
 @import "animation";
 @import "window";
+@import "markdown";
+@import "highlight";
 
 @mixin light {
   --theme: light;

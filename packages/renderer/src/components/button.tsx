@@ -17,7 +17,7 @@ export function IconButton(props: {
     <button
       className={
         styles["icon-button"] +
-        ` ${props.bordered ? styles["border"]:""} ${props.shadow && styles.shadow} ${
+        ` ${true && styles.border} ${props.shadow && styles.shadow} ${
           props.className ?? ""
         } clickable ${styles[props.type ?? ""]}`
       }
@@ -27,19 +27,12 @@ export function IconButton(props: {
       role="button"
     >
       {props.icon && (
-        <div
-          className={
-            styles["icon-button-icon"] +
-            ` ${props.type === "primary" && "no-dark"}`
-          }
-        >
+        <div className={styles["icon-button-icon"] + ` ${props.type === "primary" && "no-dark"}`}>
           {props.icon}
         </div>
       )}
 
-      {props.text && (
-        <div className={styles["icon-button-text"]}>{props.text}</div>
-      )}
+      {props.text && <div className={styles["icon-button-text"]}>{props.text}</div>}
     </button>
   );
 }
