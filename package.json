@@ -58,7 +58,7 @@
     "simple-git-hooks": "2.8.1",
     "typescript": "5.0.3",
     "unplugin-auto-expose": "0.0.4",
-    "vite": "4.2.1",
+    "vite": "4.5.0",
     "vite-plugin-svgr": "^2.4.0",
     "vitest": "0.29.8",
     "vitest-dom": "^0.0.4"
